@@ -5,7 +5,7 @@ class ProductManager extends StatefulWidget
 {
 
   final String startingproduct;
-  ProductManager(this.startingproduct)
+  ProductManager(this.startingproduct);
   @override
   State<StatefulWidget> createState()
   {
