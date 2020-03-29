@@ -9,9 +9,16 @@ class MenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: RaisedButton(
-          color: Colors.blue, child: Text(option, style: TextStyle(fontSize: 20, color: Colors.white) ),
-          onPressed: selectHandler,
-    ));
+      height: 65.0,
+      width:137.0,
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: Colors.grey, style: BorderStyle.solid, width: 1.0),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Center(
+        child: Text(option),
+      ),
+    );
   }
 }

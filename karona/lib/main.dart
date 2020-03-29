@@ -23,12 +23,33 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        
+       
         home: Scaffold(
-            appBar: AppBar(
-              title: Header(),
+            backgroundColor:Colors.green,
+            body:ListView(
+                children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 15.0, left: 10.0),
+            child: Row(
+            children: <Widget>[
+                Container(
+                      child: 
+                        IconButton(
+                          icon: Icon(Icons.menu),
+                          color: Colors.white,
+                          onPressed: () {},
+                        ),
+                    )
+              ],
             ),
-            body: Body()));
-    //Text('How can I assist you today?')));
+          ),
+          Header(),
+          SizedBox(height: 40.0),
+          Body()
+          ])));
+
+            
+            
+    
   }
 }
