@@ -76,8 +76,8 @@ class _MyAppState extends State<MyApp> {
             body: ListView(children: [
               Column(children:
                 active_challenges_for_Helen.map((element) => Card(
-                child: Column(children: <Widget>[
-              Image.asset('assets/food.jpg'),
+                child: Column(children: <Widget>[Header(), SizedBox(height: 40.0), Body(),
+              //Image.asset('assets/food.jpg'),
               Text(element.toString())
             ],
             ),
