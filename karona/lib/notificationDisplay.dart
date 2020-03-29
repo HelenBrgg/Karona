@@ -7,7 +7,7 @@ class NotificationDisplay extends StatelessWidget {
       width: double.infinity,
       height:410,
       child:Column(children:[
-        Text('Notification', style:TextStyle(fontSize: 30,color: Colors.blue), textAlign: TextAlign.left,)
+        Text('Notifications', style:TextStyle(fontSize: 30,color: Colors.blue), textAlign: TextAlign.left,)
       ])
       
     );
