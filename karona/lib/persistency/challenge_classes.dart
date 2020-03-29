@@ -19,6 +19,6 @@ class Challenge {
   // each dog when using the print statement.
   @override
   String toString() {
-    return 'Dog{id: $id, challengeText: $challengeText}';
+    return '\"$challengeText\" (challenge id = $id)';
   }
 }

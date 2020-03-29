@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './widget/local_notification_widget.dart';
+import './notifications/local_notification_widget.dart';
 
 void main() => runApp(MyApp());
 
