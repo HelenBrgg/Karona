@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
-import './widget/local_notification_widget.dart';
+import './header.dart';
+import './body.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  final String appTitle = 'Local Notifications';
+class MyApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) => MaterialApp(
-        title: appTitle,
-        home: MainPage(appTitle: appTitle),
-      );
+  _MyAppState createState() => _MyAppState();
 }
 
-class MainPage extends StatelessWidget {
-  final String appTitle;
+class _MyAppState extends State<MyApp> {
+  var questionIndex = 0; //makes our widget stateful
 
-  const MainPage({this.appTitle});
+  void chooseFunction() {
+    setState(() {
+      //rerenders the widget when the state is changed(runs build() again)
+      questionIndex = questionIndex + 1;
+    });
+    print('Answer Chosen');
+  }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(appTitle),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: LocalNotificationWidget(),
-        ),
-      );
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        
+        home: Scaffold(
+            appBar: AppBar(
+              title: Header(),
+            ),
+            body: Body()));
+    //Text('How can I assist you today?')));
+  }
 }
