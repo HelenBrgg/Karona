@@ -17,9 +17,9 @@ class _MenuState extends State<Menu> {
         Container(
           
           child: Row(children: [
-            MenuButton(selectHandler, options[0]),
-            MenuButton(selectHandler, options[1]),
-            MenuButton(selectHandler, options[2]),
+            MenuButton(options[0]),
+            MenuButton(options[1]),
+            MenuButton(options[2]),
           ]),
         )
       
