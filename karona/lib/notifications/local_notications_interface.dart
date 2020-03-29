@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
+import 'dart:async';
 
 NotificationDetails get _ongoing_notdetails{
   final androidChannelSpecifics = AndroidNotificationDetails(
@@ -86,12 +87,18 @@ NotificationDetails get _daily_notdetails {
   return NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
 }
 
+
+
+
+
 class NotificationManagerInterface
 {
 
     String _toTwoDigitString(int value) {
     return value.toString().padLeft(2, '0');}
     final notifications = FlutterLocalNotificationsPlugin();
+    final StreamController<int> _streamControllerNotificationPressed = new StreamController<int>.broadcast();
+    Stream<int> _streamNotificationPressed;
 
   void init_notification_functionality()
   {
@@ -103,9 +110,14 @@ class NotificationManagerInterface
     notifications.initialize(
         InitializationSettings(settingsAndroid, settingsIOS),
         onSelectNotification: onSelectNotification);
+    
+    _streamNotificationPressed = _streamControllerNotificationPressed.stream;
   }
 
-   Future onSelectNotification(String payload) async => print("Selected notification " + payload);
+   Future onSelectNotification(String payload) async 
+   {
+     _streamControllerNotificationPressed.add(12);
+   }
 
   // show a silent notification, immediately
 Future showSilentNotification({
@@ -198,6 +210,10 @@ Future showSilentNotification({
   void cancelAll()
   {
     notifications.cancelAll();
+  }
+
+   Stream<int> getStreamNotificationPressed() {
+    return _streamNotificationPressed;
   }
 }
 

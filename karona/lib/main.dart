@@ -30,6 +30,7 @@ async
   //wifi observer and stream listener
   final WifiObserver wifiObserver = WifiObserver();
   wifiObserver.getStreamGotHome().listen((data){notificationManagerInterface.showTransientNotification(title: 'Hey, you :)', body: 'You should wash your hands', id: -1);});
+  print(wifiObserver.getWifiSSID());
 
   print("\nAll active challenges for Helen = ");
   for(var i=0;i<active_challenges_for_Helen.length;i++){
@@ -42,6 +43,12 @@ async
   chalMan.deactivateChallenge(challengeToRemove);
   
   print("\nAll active challenges for Helen (post removal) = ");
+  for(var i=0;i<active_challenges_for_Helen.length;i++){
+      print(active_challenges_for_Helen[i]); 
+  }
+
+  chalMan.activateChallenge(challengeToRemove);
+  print("\nAll active challenges for Helen (Re-adding) = ");
   for(var i=0;i<active_challenges_for_Helen.length;i++){
       print(active_challenges_for_Helen[i]); 
   }
@@ -78,7 +85,7 @@ class _MyAppState extends State<MyApp> {
                 active_challenges_for_Helen.map((element) => Card(
                 child: Column(children: <Widget>[
               Image.asset('assets/food.jpg'),
-              Text(element.toString())
+              Text(element.challengeText)
             ],
             ),
             )).toList()

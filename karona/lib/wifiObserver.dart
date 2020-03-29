@@ -8,7 +8,7 @@ class WifiObserver {
   var _currentSSID;
   var _currentName;
   var _subscription;
-  final String _homeSSID = "02:00:00:00:01:00";
+  final String _homeSSID = "02:00:00:00:00:00";
   bool _alertedFlag = false;
   final StreamController<bool> _streamControllerGotHome = new StreamController<bool>.broadcast();
   Stream<bool> _streamGotHome;
@@ -23,6 +23,7 @@ class WifiObserver {
     }
 
   void _testForHomeNetwork(ConnectivityResult result){
+    print("Current SSID = " + _currentSSID);
     if(result == ConnectivityResult.wifi){
       _obtainWifiInfo();
       if(_currentSSID == _homeSSID && !_alertedFlag){

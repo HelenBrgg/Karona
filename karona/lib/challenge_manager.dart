@@ -12,6 +12,7 @@ class ChallengeManager
   Challenge_SQL_Interface challengeSqlInterface = new Challenge_SQL_Interface();
 
   List<Challenge> activeChallenges = List<Challenge>();
+  List<Challenge> allChallenges = List<Challenge>();
 
   Future<void> initChallengeManager() async
   {
@@ -60,7 +61,7 @@ class ChallengeManager
     print("\n>>>>>>>>> Activating random challenge.");
 
     // load all challenges
-    List<Challenge> allChallenges = await challengeSqlInterface.challenges();
+    allChallenges = await challengeSqlInterface.challenges();
 
     print("\nAll challenges = ");
     for(var i=0;i<allChallenges.length;i++){
@@ -96,6 +97,11 @@ class ChallengeManager
   void deactivateChallenge(Challenge challenge)
   {
     activeChallenges.remove(challenge);
+  }
+
+  void activateChallenge(Challenge challenge)
+  {
+    activeChallenges.add(challenge);
   }
 }
 
