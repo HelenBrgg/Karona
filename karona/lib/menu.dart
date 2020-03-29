@@ -7,19 +7,21 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  var options= ['Health', 'Challenges','empty'];
-
+  var options = ['Health', 'Challenges', 'empty'];
+  selectHandler()=>print('');
   @override
   Widget build(BuildContext context) {
     return Container(
-      
       child: Column(children: [
         Text('Menu'),
-        Row(children: [
-          MenuButton(null,options[0]),
-          MenuButton(null,options[1]),
-          MenuButton(null,options[2]),
-        ]),
+        Container(
+          width: double.infinity,
+          child: Row(children: [
+            MenuButton(selectHandler, options[0]),
+            MenuButton(selectHandler, options[1]),
+            MenuButton(selectHandler, options[2]),
+          ]),
+        )
       ]),
     );
   }

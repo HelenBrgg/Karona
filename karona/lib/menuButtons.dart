@@ -10,8 +10,8 @@ class MenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: RaisedButton(
-          color: Colors.blue, child: Text(''),
-          onPressed: selectHandler),
-    );
+          color: Colors.blue, child: Text(option, style: TextStyle(fontSize: 20, color: Colors.white) ),
+          onPressed: selectHandler,
+    ));
   }
 }
