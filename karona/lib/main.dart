@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import './header.dart';
 import './body.dart';
+import 'wifiObserver.dart';
 
 import './challenge_manager.dart';
 import './persistency/challenge_classes.dart';
+import './notifications/local_notications_interface.dart';
 import 'dart:async';
 import './notifications/local_notications_interface.dart';
 List <Challenge> active_challenges_for_Helen;
@@ -13,11 +15,6 @@ async
 {
   WidgetsFlutterBinding.ensureInitialized();
 
-  NotificationManagerInterface notificationManagerInterface = new NotificationManagerInterface();
-  await notificationManagerInterface.init_notification_functionality();
-
-  notificationManagerInterface.showTransientNotification(title: 'trans', body: 'trans body', id: 5);
-
   ChallengeManager chalMan = new ChallengeManager();
   await chalMan.initChallengeManager();
   await chalMan.generatePseudoChallenges();
@@ -25,6 +22,14 @@ async
   await chalMan.activateRandomChallenge();
   await chalMan.activateRandomChallenge();
   active_challenges_for_Helen = chalMan.activeChallenges;
+
+  //Notifications managers
+  NotificationManagerInterface notificationManagerInterface = new NotificationManagerInterface();
+  await notificationManagerInterface.init_notification_functionality();
+
+  //wifi observer and stream listener
+  final WifiObserver wifiObserver = WifiObserver();
+  wifiObserver.getStreamGotHome().listen((data){notificationManagerInterface.showTransientNotification(title: 'Hey, you :)', body: 'You should wash your hands', id: -1);});
 
   print("\nAll active challenges for Helen = ");
   for(var i=0;i<active_challenges_for_Helen.length;i++){
@@ -45,11 +50,13 @@ async
 }
 
 class MyApp extends StatefulWidget {
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
+
   var questionIndex = 0; //makes our widget stateful
 
   void chooseFunction() {
@@ -62,6 +69,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
         home: Scaffold(
             backgroundColor: Colors.green,
