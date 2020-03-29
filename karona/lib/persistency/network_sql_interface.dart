@@ -7,9 +7,12 @@ import 'package:flutter/widgets.dart';
 
 import './network_classes.dart';
 
+
+
 class Networks_SQL_Interface
 {
   Future<Database> database;
+
   void Init_SQL_Interface() async
   {
     database = openDatabase(

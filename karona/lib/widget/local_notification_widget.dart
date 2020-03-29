@@ -12,28 +12,15 @@ class LocalNotificationWidget extends StatefulWidget
 
 class _LocalNotificationWidgetState extends State<LocalNotificationWidget>
 {
-  final notifications = FlutterLocalNotificationsPlugin();
+  
 
   final NotificationManager notManager = NotificationManager();
 
   @override
   void initState() {
     super.initState();
-
-    final settingsAndroid = AndroidInitializationSettings('app_icon');
-    final settingsIOS = IOSInitializationSettings(
-        onDidReceiveLocalNotification: (id, title, body, payload) =>
-            onSelectNotification(payload));
-
-    notifications.initialize(
-        InitializationSettings(settingsAndroid, settingsIOS),
-        onSelectNotification: onSelectNotification);
+    notManager.init_notification_functionality();
   }
-
-  Future onSelectNotification(String payload) async => await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SecondPage(payload: payload)),
-      );
 
   @override
   Widget build(BuildContext context) => Padding(
@@ -43,40 +30,35 @@ class _LocalNotificationWidgetState extends State<LocalNotificationWidget>
             title('Immediate'),
             RaisedButton(
               child: Text('Hey (immediate notification)'),
-              onPressed: () => notManager.showOngoingNotification(notifications,
-                  title: 'Hey, you :)', body: 'What\'s going on?'),
+              onPressed: () => notManager.showOngoingNotification(title: 'Hey, you :)', body: 'What\'s going on?'),
             ),
             RaisedButton(
               child: Text('Other notification'),
-              onPressed: () => notManager.showOngoingNotification(notifications,
-                  title: 'OtherTitle', body: 'OtherBody', id: 20),
+              onPressed: () => notManager.showOngoingNotification(title: 'OtherTitle', body: 'OtherBody', id: 20),
             ),
             const SizedBox(height: 32),
             title('Scheduled'),
             RaisedButton(
               child: Text('Scheduled notification'),
-              onPressed: () => notManager.scheduleNotification(notifications,
-                  title: 'Scheduled Notification', body: 'You said to call you back in 10 seconds. Here I am :)', id: 30),
+              onPressed: () => notManager.scheduleNotification(title: 'Scheduled Notification', body: 'You said to call you back in 10 seconds. Here I am :)', id: 30),
             ),
              const SizedBox(height: 32),
             title('Daily'),
             RaisedButton(
               child: Text('Daily notification'),
-              onPressed: () => notManager.setupDailyNotification(notifications,
-                  title: 'Daily Notification', body: 'It\s 21:06 :)', id: 40),
+              onPressed: () => notManager.setupDailyNotification(title: 'Daily Notification', body: 'It\s 21:06 :)', id: 40),
             ),
             const SizedBox(height: 32),
             title('Repeated'),
             RaisedButton(
               child: Text('Repeated notification'),
-              onPressed: () => notManager.setupRepeatedNotification(notifications,
-                  title: 'Repeated Notification', body: 'One minute has passed', id: 50),
+              onPressed: () => notManager.setupRepeatedNotification(title: 'Repeated Notification', body: 'One minute has passed', id: 50),
             ),
             const SizedBox(height: 32),
             title('Cancel'),
             RaisedButton(
               child: Text('Cancel all notification'),
-              onPressed: notifications.cancelAll,
+              onPressed: () =>notManager.cancelAll(),
             ),
           ],
         ),

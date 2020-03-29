@@ -77,31 +77,41 @@ class NotificationManager
 
     String _toTwoDigitString(int value) {
     return value.toString().padLeft(2, '0');}
-  
+    final notifications = FlutterLocalNotificationsPlugin();
+
+  void init_notification_functionality()
+  {
+    final settingsAndroid = AndroidInitializationSettings('app_icon');
+    final settingsIOS = IOSInitializationSettings(
+        onDidReceiveLocalNotification: (id, title, body, payload) =>
+            onSelectNotification(payload));
+
+    notifications.initialize(
+        InitializationSettings(settingsAndroid, settingsIOS),
+        onSelectNotification: onSelectNotification);
+  }
+
+   Future onSelectNotification(String payload) async => print("Selected notification " + payload);
+
   // show a silent notification, immediately
-Future showSilentNotification(
-    FlutterLocalNotificationsPlugin notifications, {
+Future showSilentNotification({
       @required String title,
       @required String body,
       int id = 0,
     }) =>
-    _showNotification(notifications,
-        title: title, body: body, id: id, type: _noSound_notdetails);
+    _showNotification(title: title, body: body, id: id, type: _noSound_notdetails);
 
   // show an ongoing notification, immediately
-  Future showOngoingNotification(
-    FlutterLocalNotificationsPlugin notifications, {
+  Future showOngoingNotification( {
     @required String title,
     @required String body,
     int id = 0,
   }) =>
-      _showNotification(notifications,
-          title: title, body: body, id: id, type: _ongoing_notdetails);
+      _showNotification(title: title, body: body, id: id, type: _ongoing_notdetails);
 
   // schedule a notification for later displaying
   Future scheduleNotification 
-  (
-    FlutterLocalNotificationsPlugin notifications, {
+  ({
     @required String title,
     @required String body,
     int id = 0,
@@ -119,8 +129,7 @@ Future showSilentNotification(
 
     // schedule a notification for later displaying
   Future setupDailyNotification 
-  (
-    FlutterLocalNotificationsPlugin notifications, {
+  ({
     @required String title,
     @required String body,
     int id = 0,
@@ -140,8 +149,7 @@ Future showSilentNotification(
 
     // schedule a notification for later displaying
   Future setupRepeatedNotification 
-  (
-    FlutterLocalNotificationsPlugin notifications, {
+  ({
     @required String title,
     @required String body,
     int id = 0,
@@ -157,8 +165,7 @@ Future showSilentNotification(
 
 
   // general function for displaying any type pf notification
-  Future _showNotification(
-  FlutterLocalNotificationsPlugin notifications, {
+  Future _showNotification({
   @required String title,
   @required String body,
   @required NotificationDetails type,
@@ -166,7 +173,10 @@ Future showSilentNotification(
 }) =>
     notifications.show(id, title, body, type);
 
-
+  void cancelAll()
+  {
+    notifications.cancelAll();
+  }
 }
 
 
