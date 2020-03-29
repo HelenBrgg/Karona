@@ -16,8 +16,7 @@ class WifiObserver {
   var _subscription;
 
   //list for networks
-  List<Network> networkList;
-  //final String _homeSSID = "02:00:00:00:01:00";
+  List<String> _networkList;
 
   //some flags for functionality
   bool _alertedFlag = false;
@@ -30,15 +29,19 @@ class WifiObserver {
   //the connectivity
   final Connectivity _connectivity = Connectivity();
 
-  void init() async{
+  void init() {
     _obtainWifiInfo();
     _subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result){_testForHomeNetwork(result);});
     _streamGotHome = _streamControllerGotHome.stream;
+    updateNetworkList();
+  }
+
+  void updateNetworkList() async{
     Networks_SQL_Interface networks_sql_interface = new Networks_SQL_Interface();
     await networks_sql_interface.Init_SQL_Interface();
-    networkList =  await networks_sql_interface.networks();
-    networkList.forEach((element) => element.toMap());
-    print(networkList);
+    (await networks_sql_interface.networks()).forEach((n){
+      _networkList.add(n.ssid);
+    });
   }
 
   void _testForHomeNetwork(ConnectivityResult result){
@@ -48,7 +51,7 @@ class WifiObserver {
     else{
       if(result == ConnectivityResult.wifi){
         _obtainWifiInfo();
-        if(_currentSSID == _currentSSID && !_alertedFlag){
+        if(_networkList.contains(_currentSSID) && !_alertedFlag){
           _streamControllerGotHome.add(true);
           _alertedFlag = true;
         }
