@@ -72,7 +72,7 @@ NotificationDetails get _daily_notdetails {
   return NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
 }
 
-class NotificationManager
+class NotificationManagerInterface
 {
 
     String _toTwoDigitString(int value) {

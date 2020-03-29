@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../local_notications_helper.dart';
+import '../local_notications_interface.dart';
 import '../page/second_page.dart';
 
 class LocalNotificationWidget extends StatefulWidget
@@ -14,7 +14,7 @@ class _LocalNotificationWidgetState extends State<LocalNotificationWidget>
 {
   
 
-  final NotificationManager notManager = NotificationManager();
+  final NotificationManagerInterface notManager = NotificationManagerInterface();
 
   @override
   void initState() {
