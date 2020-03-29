@@ -5,13 +5,19 @@ import './body.dart';
 import './challenge_manager.dart';
 import './persistency/challenge_classes.dart';
 import 'dart:async';
-
+import './notifications/local_notications_interface.dart';
 List <Challenge> active_challenges_for_Helen;
 
 void main()
 async
 {
   WidgetsFlutterBinding.ensureInitialized();
+
+  NotificationManagerInterface notificationManagerInterface = new NotificationManagerInterface();
+  await notificationManagerInterface.init_notification_functionality();
+
+  notificationManagerInterface.showTransientNotification(title: 'trans', body: 'trans body', id: 5);
+
   ChallengeManager chalMan = new ChallengeManager();
   await chalMan.initChallengeManager();
   await chalMan.generatePseudoChallenges();

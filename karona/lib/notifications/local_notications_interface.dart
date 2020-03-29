@@ -15,6 +15,20 @@ NotificationDetails get _ongoing_notdetails{
   return NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
 }
 
+NotificationDetails get _transient_notdetails{
+  final androidChannelSpecifics = AndroidNotificationDetails(
+    'your channel id',
+    'your channel name',
+    'your channel description',
+    importance: Importance.Max,
+    priority: Priority.High,
+    ongoing: false,
+    autoCancel: false,
+  );
+  final iOSChannelSpecifics = IOSNotificationDetails();
+  return NotificationDetails(androidChannelSpecifics, iOSChannelSpecifics);
+}
+
 NotificationDetails get _repeated_notdetails {
   final androidChannelSpecifics = AndroidNotificationDetails(
     'your channel id',
@@ -108,6 +122,14 @@ Future showSilentNotification({
     int id = 0,
   }) =>
       _showNotification(title: title, body: body, id: id, type: _ongoing_notdetails);
+
+  // show an ongoing notification, immediately
+  Future showTransientNotification( {
+    @required String title,
+    @required String body,
+    int id = 0,
+  }) =>
+      _showNotification(title: title, body: body, id: id, type: _transient_notdetails);
 
   // schedule a notification for later displaying
   Future scheduleNotification 
