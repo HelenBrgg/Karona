@@ -13,13 +13,13 @@ class ChallengeManager
 
   List<Challenge> activeChallenges = List<Challenge>();
 
-  void initChallengeManager() async
+  Future<void> initChallengeManager() async
   {
     await notificationManagerInterface.init_notification_functionality();
     await challengeSqlInterface.Init_SQL_Interface();
   }
 
-  void generatePseudoChallenges()
+  Future<void> generatePseudoChallenges()
   async
   {
     var clg_call_grandma = Challenge(
@@ -53,7 +53,8 @@ class ChallengeManager
     await challengeSqlInterface.insertChallenge(clg_call_father);
     await challengeSqlInterface.insertChallenge(clg_go_to_bathroom);
   }
-  void activateRandomChallenge()
+  
+  Future<void> activateRandomChallenge()
   async
   {
     print("\n>>>>>>>>> Activating random challenge.");
