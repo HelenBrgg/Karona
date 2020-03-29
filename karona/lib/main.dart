@@ -29,6 +29,7 @@ async
 
   //wifi observer and stream listener
   final WifiObserver wifiObserver = WifiObserver();
+  wifiObserver.init();
   wifiObserver.getStreamGotHome().listen((data){notificationManagerInterface.showTransientNotification(title: 'Hey, you :)', body: 'You should wash your hands', id: -1);});
 
   print("\nAll active challenges for Helen = ");

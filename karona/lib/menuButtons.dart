@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'DetailPages/SocializingDetail.dart';
+import 'DetailPages/socializingDetail.dart';
 import 'DetailPages/stayHealthyDetail.dart';
 import 'DetailPages/pseudoDetail.dart';
 
