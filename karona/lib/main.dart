@@ -16,7 +16,7 @@ async
   NotificationManagerInterface notificationManagerInterface = new NotificationManagerInterface();
   await notificationManagerInterface.init_notification_functionality();
 
-  notificationManagerInterface.showTransientNotification(title: 'trans', body: 'trans body', id: 5);
+  notificationManagerInterface.showOngoingNotification(title: 'trans', body: 'trans body', id: 5);
 
   ChallengeManager chalMan = new ChallengeManager();
   await chalMan.initChallengeManager();
