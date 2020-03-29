@@ -1,7 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:meta/meta.dart';
 
-NotificationDetails get _ongoing_notdetails {
+NotificationDetails get _ongoing_notdetails{
   final androidChannelSpecifics = AndroidNotificationDetails(
     'your channel id',
     'your channel name',
