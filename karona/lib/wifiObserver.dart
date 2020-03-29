@@ -9,7 +9,6 @@ class WifiObserver {
   var _currentName;
   var _subscription;
   final String _homeSSID = "02:00:00:00:01:00";
-  bool _reminderFlag = false;
   bool _alertedFlag = false;
   final StreamController<bool> _streamControllerGotHome = new StreamController<bool>.broadcast();
   Stream<bool> _streamGotHome;
@@ -29,8 +28,10 @@ class WifiObserver {
       if(_currentSSID == _homeSSID && !_alertedFlag){
         _streamControllerGotHome.add(true);
         _alertedFlag = true;
-        _reminderFlag = true;
       }
+    }
+    else{
+      _alertedFlag = false;
     }
   }
 
@@ -59,16 +60,8 @@ class WifiObserver {
     return _currentSSID;
   }
 
-  bool getReminderStatus() {
-    return _reminderFlag;
-  }
-
   Stream<bool> getStreamGotHome() {
     return _streamGotHome;
-  }
-
-  void setReminderStatus(bool status) {
-    _reminderFlag = status;
   }
 
   void setAlertFlag(bool) {
