@@ -11,7 +11,7 @@ class Body extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(topRight: Radius.circular(75.0)),
-        ),
-        child:Column(children:[Column(Container NotificationDisplay()),Menu()]));
+        ), 
+        child:Column(children:[NotificationDisplay(),Menu()]));//fixup
   }
 }
