@@ -4,21 +4,7 @@ import './body.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  var questionIndex = 0; //makes our widget stateful
-
-  void chooseFunction() {
-    setState(() {
-      //rerenders the widget when the state is changed(runs build() again)
-      questionIndex = questionIndex + 1;
-    });
-    print('Answer Chosen');
-  }
+class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
