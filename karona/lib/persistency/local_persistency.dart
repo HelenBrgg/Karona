@@ -2,83 +2,88 @@ import 'dart:async';
 
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:flutter/widgets.dart';
 
 
-class SQLiteInterface
+import './challenge_classes.dart';
+
+class Challenge_SQL_Interface
 {
-  
-}
-
-void main() async {
-  final database = openDatabase(
+  Future<Database> database;
+  void Init_SQL_Interface() async
+  {
+    this.database = openDatabase(
     // Set the path to the database. Note: Using the `join` function from the
     // `path` package is best practice to ensure the path is correctly
     // constructed for each platform.
-    join(await getDatabasesPath(), 'doggie_database.db'),
+    join(await getDatabasesPath(), 'challenge_database.db'),
     // When the database is first created, create a table to store dogs.
     onCreate: (db, version) {
       return db.execute(
-        "CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)",
+        "CREATE TABLE challenges(id INTEGER PRIMARY KEY, challengeText TEXT)",
       );
     },
     // Set the version. This executes the onCreate function and provides a
     // path to perform database upgrades and downgrades.
     version: 1,
   );
+  return;
+  }
 
-  Future<void> insertDog(Dog dog) async {
+  Future<void> insertChallenge(Challenge challenge) async {
     // Get a reference to the database.
     final Database db = await database;
 
+    print("##################     Got Database");
     // Insert the Dog into the correct table. Also specify the
     // `conflictAlgorithm`. In this case, if the same dog is inserted
     // multiple times, it replaces the previous data.
     await db.insert(
-      'dogs',
-      dog.toMap(),
+      'challenges',
+      challenge.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+    print("#################    Awaited insert");
   }
 
-  Future<List<Dog>> dogs() async {
+   Future<List<Challenge>> challenges() async {
     // Get a reference to the database.
     final Database db = await database;
 
     // Query the table for all The Dogs.
-    final List<Map<String, dynamic>> maps = await db.query('dogs');
+    final List<Map<String, dynamic>> maps = await db.query('challenges');
 
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
-      return Dog(
+      return Challenge(
         id: maps[i]['id'],
-        name: maps[i]['name'],
-        age: maps[i]['age'],
+        challengeText: maps[i]['challengeText'],
       );
     });
   }
 
-  Future<void> updateDog(Dog dog) async {
+  Future<void> updateChallenge(Challenge challenge) async {
     // Get a reference to the database.
     final db = await database;
 
     // Update the given Dog.
     await db.update(
-      'dogs',
-      dog.toMap(),
+      'challenges',
+      challenge.toMap(),
       // Ensure that the Dog has a matching id.
       where: "id = ?",
       // Pass the Dog's id as a whereArg to prevent SQL injection.
-      whereArgs: [dog.id],
+      whereArgs: [challenge.id],
     );
   }
 
-  Future<void> deleteDog(int id) async {
+   Future<void> deleteChallenge(int id) async {
     // Get a reference to the database.
     final db = await database;
 
     // Remove the Dog from the database.
     await db.delete(
-      'dogs',
+      'challenges',
       // Use a `where` clause to delete a specific dog.
       where: "id = ?",
       // Pass the Dog's id as a whereArg to prevent SQL injection.
@@ -86,55 +91,68 @@ void main() async {
     );
   }
 
-  var fido = Dog(
+  Future<Challenge> getChallengeById(int id) async {
+  final db = await database;
+  List<Map> results = await db.query('challenges',
+      where: 'id = ?',
+      whereArgs: [id]);
+
+  if (results.length > 0) {
+    return new Challenge.fromMap(results.first);
+  }
+
+  return null;
+}
+
+
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  print(" #########       Launching Main");
+
+  Challenge_SQL_Interface db_interface = new Challenge_SQL_Interface();
+  await db_interface.Init_SQL_Interface();
+
+
+  var clg_call_grandma = Challenge(
     id: 0,
-    name: 'Fido',
-    age: 35,
+    challengeText: 'Call your Grandma!',
   );
 
+  print(" #########       Inserting");
   // Insert a dog into the database.
-  await insertDog(fido);
+  await db_interface.insertChallenge(clg_call_grandma);
 
+  print(" #########       Printing List");
   // Print the list of dogs (only Fido for now).
-  print(await dogs());
+  print(await db_interface.challenges());
 
   // Update Fido's age and save it to the database.
-  fido = Dog(
-    id: fido.id,
-    name: fido.name,
-    age: fido.age + 7,
+  clg_call_grandma = Challenge(
+    id: 0,
+    challengeText: 'Call her NOW!',
   );
-  await updateDog(fido);
+  await db_interface.updateChallenge(clg_call_grandma);
 
   // Print Fido's updated information.
-  print(await dogs());
+  print(await db_interface.challenges());
 
+  // query the database for fido's id (0)
+  Challenge query = await db_interface.getChallengeById(0) ;
+  
+  print('Here\'s challenge #0:');
+  print(query);
+  
   // Delete Fido from the database.
-  await deleteDog(fido.id);
+  await db_interface.deleteChallenge(clg_call_grandma.id);
 
   // Print the list of dogs (empty).
-  print(await dogs());
+  print(await db_interface.challenges());
+  
 }
 
-class Dog {
-  final int id;
-  final String name;
-  final int age;
 
-  Dog({this.id, this.name, this.age});
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': name,
-      'age': age,
-    };
-  }
 
-  // Implement toString to make it easier to see information about
-  // each dog when using the print statement.
-  @override
-  String toString() {
-    return 'Dog{id: $id, name: $name, age: $age}';
-  }
-}
+
