@@ -9,15 +9,22 @@ class MenuButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 65.0,
-      width:137.0,
+      height: 63.0,
+      width:133.0,
+      margin: EdgeInsets.all(2),
       decoration: BoxDecoration(
+        
+        color: Colors.green,
         border: Border.all(
-            color: Colors.grey, style: BorderStyle.solid, width: 1.0),
+             style: BorderStyle.solid, width: 1.0,color: Colors.green),
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Center(
-        child: Text(option),
+        child: Text(option, 
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,)),
       ),
     );
   }

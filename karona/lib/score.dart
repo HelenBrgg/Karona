@@ -9,7 +9,8 @@ class _ScoreState extends State<Score> {
   var count = 0;
 
   void increase({points = 1}) {
-    setState(() {//rerenders the widget when the state is changed(runs build() again)
+    setState(() {
+      //rerenders the widget when the state is changed(runs build() again)
       count = count + points;
     });
   }
@@ -23,10 +24,19 @@ class _ScoreState extends State<Score> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin:EdgeInsets.all(10),
-      child: Column(
-      children: [
-        Text('YourScore:',style: TextStyle(fontSize: 30)),
-        Text(count.toString(),style: TextStyle(fontSize: 40)),]));
+      alignment: Alignment.topRight,
+        margin: EdgeInsets.all(10),
+        child: Column(children: [
+          Text('Your Score: ',
+              style: TextStyle(fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0),textAlign: TextAlign.right,),
+          Text(count.toString(),
+              style:TextStyle(fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 30.0),textAlign: TextAlign.right,)
+        ]));
   }
 }

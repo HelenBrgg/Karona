@@ -7,11 +7,11 @@ class Menu extends StatefulWidget {
 }
 
 class _MenuState extends State<Menu> {
-  var options = ['Health', 'Challenges', 'Empty'];
+  var options = ['Stay healthy', 'Socializing', 'Pseudo'];
   selectHandler()=>print('');
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Container(alignment: Alignment.bottomCenter,
       width:double.infinity,
       child:
         Container(
