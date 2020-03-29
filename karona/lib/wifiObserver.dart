@@ -16,7 +16,7 @@ class WifiObserver {
   var _subscription;
 
   //list for networks
-  List<String> _networkList;
+  List<String> _networkList = List<String>();
 
   //some flags for functionality
   bool _alertedFlag = false;
@@ -26,19 +26,20 @@ class WifiObserver {
   final StreamController<bool> _streamControllerGotHome = new StreamController<bool>.broadcast();
   Stream<bool> _streamGotHome;
 
+  Networks_SQL_Interface networks_sql_interface = new Networks_SQL_Interface();
+
   //the connectivity
   final Connectivity _connectivity = Connectivity();
 
-  void init() {
+  void init() async{
     _obtainWifiInfo();
     _subscription = Connectivity().onConnectivityChanged.listen((ConnectivityResult result){_testForHomeNetwork(result);});
     _streamGotHome = _streamControllerGotHome.stream;
+    await networks_sql_interface.Init_SQL_Interface();
     updateNetworkList();
   }
 
   void updateNetworkList() async{
-    Networks_SQL_Interface networks_sql_interface = new Networks_SQL_Interface();
-    await networks_sql_interface.Init_SQL_Interface();
     (await networks_sql_interface.networks()).forEach((n){
       _networkList.add(n.ssid);
     });
@@ -60,6 +61,25 @@ class WifiObserver {
         _alertedFlag = false;
       }
     }
+  }
+  
+  void printNetworkDB() async{
+    print(await networks_sql_interface.networks());
+  }
+
+  void clearNetworkDB() async{
+    (await networks_sql_interface.networks()).forEach((n) async{
+      await networks_sql_interface.deleteNetwork(n.ssid);
+    });
+  }
+
+  void addCurrentNetworkToHomeList() async{
+    var network = Network(
+        id: 0,
+        ssid: _currentSSID,
+        name: _currentName
+    );
+    await networks_sql_interface.insertNetwork(network);
   }
 
   void _stopConnectivityListener() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './header.dart';
 import './body.dart';
 import 'wifiObserver.dart';
+import 'globals.dart';
 
 import './challenge_manager.dart';
 import './persistency/challenge_classes.dart';
@@ -28,7 +29,7 @@ async
   await notificationManagerInterface.init_notification_functionality();
 
   //wifi observer and stream listener
-  final WifiObserver wifiObserver = WifiObserver();
+  wifiObserver = WifiObserver();
   wifiObserver.init();
   wifiObserver.getStreamGotHome().listen((data){notificationManagerInterface.showTransientNotification(title: 'Hey, you :)', body: 'You should wash your hands', id: -1);});
 

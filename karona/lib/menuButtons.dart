@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'DetailPages/socializingDetail.dart';
 import 'DetailPages/stayHealthyDetail.dart';
 import 'DetailPages/pseudoDetail.dart';
+import 'globals.dart';
 
 class MenuButton extends StatelessWidget {
   final String option;
@@ -34,9 +35,10 @@ class MenuButton extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               )),icon],),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return pageSelector();
-            }));
+            //Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //  return pageSelector();
+            //}));
+            wifiObserver.printNetworkDB();
           },
           shape: new RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
