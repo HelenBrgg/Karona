@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './score.dart';
+
 import './menu.dart';
 import './notificationDisplay.dart';
 
@@ -7,8 +7,11 @@ class Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.infinity, margin: EdgeInsets.all(10),
-        child: Column(
-          children: [Score(),NotificationDisplay(), Menu()]));
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(topRight: Radius.circular(75.0)),
+        ), 
+        child:Column(children:[NotificationDisplay(),Menu()]));//fixup
   }
 }
