@@ -1,5 +1,6 @@
 //imports the package for checking connectivity
 import 'package:connectivity/connectivity.dart';
+import 'dart:async';
 
 import 'package:flutter/services.dart';
 
@@ -9,7 +10,10 @@ class WifiObserver {
   var _subscription;
   final String _homeSSID = "02:00:00:00:01:00";
   bool _reminderFlag = false;
+  StreamController<String> homeController = new StreamController();
+
   final Connectivity _connectivity = Connectivity();
+
 
   WifiObserver(){
     _obtainWifiInfo();
@@ -20,6 +24,7 @@ class WifiObserver {
     if(result == ConnectivityResult.wifi){
       _obtainWifiInfo();
       if(_currentSSID == _homeSSID){
+
         _reminderFlag = true;
       }
     }
@@ -40,6 +45,7 @@ class WifiObserver {
 
     }
   }
+
 
   String getWifiName() {
     return _currentName;

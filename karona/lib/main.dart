@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'wifiObserver.dart';
 
 void main() => runApp(MyApp());
 
@@ -45,6 +46,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  var _wifiName;
+  var _reminderflag;
+  var _wifiSSID;
+  final WifiObserver wifiObserver = WifiObserver();
+
+
 
   void _incrementCounter() {
     setState(() {
@@ -59,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -95,17 +103,38 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '$_reminderflag',
               style: Theme.of(context).textTheme.display1,
             ),
+            Text(
+              'WifiSSID:',
+            ),
+            Text(
+              '$_wifiSSID',
+              style: Theme.of(context).textTheme.display1,
+            ),
+            FlatButton(
+              onPressed: () {
+                wifiObserver.setReminderStatus(false);
+              },
+              child: Text(
+                "Set false",
+              ),
+            )
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () async{
+
+          _incrementCounter();
+          _wifiSSID = wifiObserver.getWifiSSID();
+          _reminderflag = wifiObserver.getReminderStatus();
+        },
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+
   }
 }
