@@ -60,10 +60,6 @@ class _MyAppState extends State<MyApp> {
         home: Scaffold(
             backgroundColor: Colors.green,
             body: ListView(children: [
-              RaisedButton(
-                child: Text('Cancel all notification'),
-                onPressed: () => chalMan.activateRandomChallenge(),
-              ),
               Header(), SizedBox(height: 20.0), Body()]
             )
         ));
