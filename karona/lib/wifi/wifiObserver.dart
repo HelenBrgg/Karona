@@ -85,6 +85,7 @@ class WifiObserver {
       );
       await networks_sql_interface.insertNetwork(network);
     }
+    updateNetworkList();
   }
 
   void _stopConnectivityListener() {
@@ -126,6 +127,14 @@ class WifiObserver {
 
   List<Network> getNetworkList() {
     return _networkList;
+  }
+
+  void deleteWifi(String SSID) async{
+    StreamController<bool> _streamControllerDeletedWlan = StreamController<bool>.broadcast();
+    Stream<bool> streamDeletedWlan;
+    await networks_sql_interface.deleteNetwork(SSID);
+    _streamControllerDeletedWlan.add(true);
+    updateNetworkList();
   }
 
 }
