@@ -8,7 +8,9 @@ import './globals.dart';
 class MenuButton extends StatelessWidget {
   final String option;
   final Icon icon;
-  MenuButton(this.option,this.icon);
+  MenuButton(this.option,this.icon, this.parentAction);
+
+  final void Function() parentAction;
   
   pageSelector() {
     if (option == 'Stay healthy') {
@@ -39,7 +41,7 @@ class MenuButton extends StatelessWidget {
             //Navigator.push(context, MaterialPageRoute(builder: (context) {
               //return pageSelector();
             //}));
-            chalMan.activateRandomChallenge();
+            parentAction();
           },
           shape: new RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
