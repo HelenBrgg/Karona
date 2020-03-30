@@ -25,18 +25,18 @@ class Challenge_SQL_Interface
   Directory appDocDir = await getApplicationDocumentsDirectory();
   String databasePath = join(appDocDir.path, 'challenge_database.db');
 
-   print("================================>>>> Exists call = " + io.File(databasePath).exists().toString());
+   print("================================>>>> Exists call = " + (await io.File(databasePath).exists()).toString());
 
   // Only copy if the database doesn't exist
-  if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound){
+  //if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound){
   // Load database from asset and copy
   ByteData data = await rootBundle.load(join('assets', 'challenge_database.db'));
   List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
 
   // Save copied asset to documents
   await new File(path).writeAsBytes(bytes);
-}
-  print("====================================>>> Exists call = " + io.File(databasePath).exists().toString());
+//}
+  print("====================================>>> Exists call = " + (await io.File(databasePath).exists()).toString());
 
   database = openDatabase(databasePath);
 
