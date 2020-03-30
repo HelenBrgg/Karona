@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'persistency/challenge_classes.dart';
 import 'globals.dart';
 
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+
 class NotificationDisplay extends StatefulWidget
 {
   @override
@@ -11,8 +14,8 @@ class NotificationDisplay extends StatefulWidget
 
 class _NotificationDisplayState extends State<NotificationDisplay>
  {
+  AudioCache _audioCache;
 
-  
   List <Challenge> active_challenges_for_Helen = [];
    void _newStreamInput(List<Challenge> data)
    {
@@ -21,6 +24,13 @@ class _NotificationDisplayState extends State<NotificationDisplay>
           });
    }
 
+  @override
+  void initState() {
+    super.initState();
+    // create this only once
+    _audioCache = AudioCache(prefix: "audio/", fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
+  }
+  
   @override
   Widget build(BuildContext context) {
     chalMan.getStreamActiveChallenges().listen((data){
@@ -73,6 +83,7 @@ class _NotificationDisplayState extends State<NotificationDisplay>
                 case 1:
                   {
                     chalMan.deactivateChallenge(element);
+                    _audioCache.play('america.mp3');
                     break;
                   }
               }
