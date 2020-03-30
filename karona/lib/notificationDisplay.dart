@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'persistency/challenge_classes.dart';
 import 'globals.dart';
 
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+
 class NotificationDisplay extends StatefulWidget
 {
   @override
@@ -11,8 +14,8 @@ class NotificationDisplay extends StatefulWidget
 
 class _NotificationDisplayState extends State<NotificationDisplay>
  {
+  AudioCache _audioCache;
 
-  
   List <Challenge> active_challenges_for_Helen = [];
    void _newStreamInput(List<Challenge> data)
    {
@@ -22,8 +25,15 @@ class _NotificationDisplayState extends State<NotificationDisplay>
    }
 
   @override
+  void initState() {
+    super.initState();
+    // create this only once
+    _audioCache = AudioCache(prefix: "audio/", fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
+  }
+  
+  @override
   Widget build(BuildContext context) {
-    activeChallengesStream.listen((data){
+    chalMan.getStreamActiveChallenges().listen((data){
         _newStreamInput(data);
     });
     return Container(
@@ -49,8 +59,39 @@ class _NotificationDisplayState extends State<NotificationDisplay>
                 active_challenges_for_Helen.map((element) => Card(
                 child: Column(children: <Widget>[
               //Image.asset('assets/food.jpg'),
-              Text(element.toString())
+              Card(child: ListTile(
+                          leading: Icon(Icons.directions_bike),
+                          title: Text(element.toString()),
+                          trailing: PopupMenuButton<int>(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 0,
+                child: Text("Info"),
+              ),
+              PopupMenuItem(
+                value: 1,
+                child: Text("I pledge allegiance to the Flag of the United States of America, and to the Republic for which it stands, one nation under God, indivisible, with liberty and justice for all."),
+              ),
             ],
+            onSelected: (value) {
+              switch (value) {
+                case 0:
+                  {
+                    print(wifiObserver.getWifiSSID());
+                    break;
+                  }
+                case 1:
+                  {
+                    chalMan.deactivateChallenge(element);
+                    _audioCache.play('america.mp3');
+                    break;
+                  }
+              }
+              setState(() {});
+            },
+          ),
+            ),
+              )],
             ),
             )).toList()
           )
@@ -59,3 +100,5 @@ class _NotificationDisplayState extends State<NotificationDisplay>
         ]));
   }
 }
+
+

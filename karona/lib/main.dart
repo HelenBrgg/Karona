@@ -20,7 +20,6 @@ async
 
   chalMan = new ChallengeManager();
   await chalMan.initChallengeManager();
-  activeChallengesStream = chalMan.getStreamActiveChallenges();
 
   //Notifications managers
   NotificationManagerInterface notificationManagerInterface = new NotificationManagerInterface();
@@ -60,10 +59,6 @@ class _MyAppState extends State<MyApp> {
         home: Scaffold(
             backgroundColor: Colors.green,
             body: ListView(children: [
-              RaisedButton(
-                child: Text('Cancel all notification'),
-                onPressed: () => chalMan.activateRandomChallenge(),
-              ),
               Header(), SizedBox(height: 20.0), Body()]
             )
         ));
