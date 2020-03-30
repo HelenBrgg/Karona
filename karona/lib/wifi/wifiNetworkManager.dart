@@ -9,7 +9,7 @@ class WifiNetworkManager extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Second page - Payload:',
+            'Home Networks:',
             style: Theme.of(context).textTheme.title,
           ),
           const SizedBox(height: 8),
