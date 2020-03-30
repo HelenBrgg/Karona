@@ -5,3 +5,4 @@ import "wifi/wifiObserver.dart";
 
 ChallengeManager chalMan;
 WifiObserver wifiObserver;
+String background = "";

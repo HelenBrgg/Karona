@@ -54,6 +54,7 @@ flutter:
     - assets/food.jpg
     - assets/challenge_database.db
     - assets/audio/america.mp3
+    - assets/america.jpg
   #  - images/a_dot_ham.jpeg
 
 

@@ -84,6 +84,7 @@ class _NotificationDisplayState extends State<NotificationDisplay>
                   {
                     chalMan.deactivateChallenge(element);
                     _audioCache.play('america.mp3');
+                    background = "assets/america.jpg";
                     break;
                   }
               }
