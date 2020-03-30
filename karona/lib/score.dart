@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 
 class Score extends StatefulWidget {
   
-  final Stream<int> valueStream;
-  const Score ({ Key key, this.valueStream }): super(key: key);
+  //final Stream<int> valueStream;
+  //const Score ({ Key key, this.valueStream }): super(key: key);
 
   @override
   _ScoreState createState() => _ScoreState();
@@ -30,13 +30,13 @@ class _ScoreState extends State<Score> {
 
   @override
   Widget build(BuildContext context) {
-    this.widget.valueStream.listen((data)
+    /*this.widget.valueStream.listen((data)
     {
       if(data == -1)
       {
         increase();
       }
-    });
+    });*/
  
     return Container(
       alignment: Alignment.topRight,

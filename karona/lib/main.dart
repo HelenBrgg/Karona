@@ -8,20 +8,19 @@ import './persistency/challenge_classes.dart';
 import './notifications/local_notications_interface.dart';
 import 'dart:async';
 import './notifications/local_notications_interface.dart';
-List <Challenge> active_challenges_for_Helen;
+
+import './globals.dart';
+
 
 void main()
 async
 {
   WidgetsFlutterBinding.ensureInitialized();
 
-  ChallengeManager chalMan = new ChallengeManager();
+  chalMan = new ChallengeManager();
   await chalMan.initChallengeManager();
   await chalMan.generatePseudoChallenges();
-  await chalMan.activateRandomChallenge();
-  await chalMan.activateRandomChallenge();
-  await chalMan.activateRandomChallenge();
-  active_challenges_for_Helen = chalMan.activeChallenges;
+  activeChallengesStream = chalMan.getStreamActiveChallenges();
 
   //Notifications managers
   NotificationManagerInterface notificationManagerInterface = new NotificationManagerInterface();
@@ -30,28 +29,6 @@ async
   //wifi observer and stream listener
   final WifiObserver wifiObserver = WifiObserver();
   wifiObserver.getStreamGotHome().listen((data){notificationManagerInterface.showTransientNotification(title: 'Hey, you :)', body: 'You should wash your hands', id: -1);});
-  print(wifiObserver.getWifiSSID());
-
-  print("\nAll active challenges for Helen = ");
-  for(var i=0;i<active_challenges_for_Helen.length;i++){
-      print(active_challenges_for_Helen[i]); 
-  }
-
-  // get 2nd challenge
-  Challenge challengeToRemove = active_challenges_for_Helen[1];
-  print("\nRemoving Challenge " + challengeToRemove.toString());
-  chalMan.deactivateChallenge(challengeToRemove);
-  
-  print("\nAll active challenges for Helen (post removal) = ");
-  for(var i=0;i<active_challenges_for_Helen.length;i++){
-      print(active_challenges_for_Helen[i]); 
-  }
-
-  chalMan.activateChallenge(challengeToRemove);
-  print("\nAll active challenges for Helen (Re-adding) = ");
-  for(var i=0;i<active_challenges_for_Helen.length;i++){
-      print(active_challenges_for_Helen[i]); 
-  }
 
   runApp(MyApp());
 }
@@ -75,21 +52,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) 
+  {
 
     return MaterialApp(
         home: Scaffold(
             backgroundColor: Colors.green,
             body: ListView(children: [
-              Column(children:
-                active_challenges_for_Helen.map((element) => Card(
-                child: Column(children: <Widget>[
-              Image.asset('assets/food.jpg'),
-              Text(element.challengeText)
-            ],
+                          RaisedButton(
+              child: Text('Cancel all notification'),
+              onPressed: () => chalMan.activateRandomChallenge(),
             ),
-            )).toList()
+              Header(), SizedBox(height: 20.0), Body(streamActiveChallenges:activeChallengesStream)]
     )  
-            ])));
+    ));
   }
 }
