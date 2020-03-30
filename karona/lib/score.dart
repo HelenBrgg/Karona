@@ -22,7 +22,7 @@ class _ScoreState extends State<Score> {
     });
   }
 
-  decrease({points = 1}) {
+  void decrease({points = 1}) {
     setState(() {
       count = count - points;
     });

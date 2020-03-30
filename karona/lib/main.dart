@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import './header.dart';
 import './body.dart';
-import 'wifiObserver.dart';
+import 'wifi/wifiObserver.dart';
+import 'globals.dart';
 
 import './challenge_manager.dart';
 import './persistency/challenge_classes.dart';
@@ -26,7 +27,8 @@ async
   await notificationManagerInterface.init_notification_functionality();
 
   //wifi observer and stream listener
-  final WifiObserver wifiObserver = WifiObserver();
+  wifiObserver = WifiObserver();
+  wifiObserver.init();
   wifiObserver.getStreamGotHome().listen((data){notificationManagerInterface.showTransientNotification(title: 'Hey, you :)', body: 'You should wash your hands', id: -1);});
 
   runApp(MyApp());
@@ -51,19 +53,19 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
-  Widget build(BuildContext context) 
+  Widget build(BuildContext context)
   {
 
     return MaterialApp(
         home: Scaffold(
             backgroundColor: Colors.green,
             body: ListView(children: [
-                          RaisedButton(
-              child: Text('Cancel all notification'),
-              onPressed: () => chalMan.activateRandomChallenge(),
-            ),
+              RaisedButton(
+                child: Text('Cancel all notification'),
+                onPressed: () => chalMan.activateRandomChallenge(),
+              ),
               Header(), SizedBox(height: 20.0), Body()]
-    )  
-    ));
+            )
+        ));
   }
 }

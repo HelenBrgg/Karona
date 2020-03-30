@@ -79,7 +79,7 @@ class Networks_SQL_Interface
     );
   }
 
-   Future<void> deleteNetwork(int id) async {
+   Future<void> deleteNetwork(String ssid) async {
     // Get a reference to the database.
     final db = await database;
 
@@ -87,9 +87,9 @@ class Networks_SQL_Interface
     await db.delete(
       'networks',
       // Use a `where` clause to delete a specific dog.
-      where: "id = ?",
+      where: "ssid = ?",
       // Pass the Dog's id as a whereArg to prevent SQL injection.
-      whereArgs: [id],
+      whereArgs: [ssid],
     );
   }
 
@@ -173,7 +173,7 @@ void main() async {
   
   print("\nDeleting Network:  " + network_b.toString());
   // Delete Fido from the database.
-  await networks_sql_interface.deleteNetwork(network_b.id);
+  await networks_sql_interface.deleteNetwork(network_b.ssid);
 
   print("\nList of Networks Left:");
   // Print the list of dogs (empty).

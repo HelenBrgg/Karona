@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'DetailPages/socializingDetail.dart';
 import 'DetailPages/stayHealthyDetail.dart';
 import 'DetailPages/pseudoDetail.dart';
+import 'globals.dart';
+import 'package:karona/wifi/wifiNetworkManager.dart';
 
 import './globals.dart';
 
@@ -19,8 +21,8 @@ class MenuButton extends StatelessWidget {
     if (option == 'Socializing') {
       return SocializingDetail();
     }
-    if (option == 'Pseudo') {
-      return PseudoDetail();
+    if (option == 'Home Networks') {
+      return WifiNetworkManager();
     }
   }
 
@@ -42,6 +44,9 @@ class MenuButton extends StatelessWidget {
               //return pageSelector();
             //}));
             parentAction();
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return pageSelector();
+            }));
           },
           shape: new RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
