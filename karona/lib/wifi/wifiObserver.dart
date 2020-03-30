@@ -1,8 +1,8 @@
 //imports the package for checking connectivity
 import 'package:connectivity/connectivity.dart';
 import 'dart:async';
-import 'persistency/network_classes.dart';
-import 'persistency/network_sql_interface.dart';
+import 'package:karona/persistency/network_classes.dart';
+import 'package:karona/persistency/network_sql_interface.dart';
 
 import 'package:flutter/services.dart';
 
@@ -40,6 +40,7 @@ class WifiObserver {
   }
 
   void updateNetworkList() async{
+    _networkList.clear();
     (await networks_sql_interface.networks()).forEach((n){
       _networkList.add(n.ssid);
     });
@@ -62,7 +63,7 @@ class WifiObserver {
       }
     }
   }
-  
+
   void printNetworkDB() async{
     print(await networks_sql_interface.networks());
   }
@@ -74,12 +75,14 @@ class WifiObserver {
   }
 
   void addCurrentNetworkToHomeList() async{
-    var network = Network(
-        id: 0,
-        ssid: _currentSSID,
-        name: _currentName
-    );
-    await networks_sql_interface.insertNetwork(network);
+    if(!_networkList.contains(_currentSSID)){
+      var network = Network(
+          id: 0,
+          ssid: _currentSSID,
+          name: _currentName
+      );
+      await networks_sql_interface.insertNetwork(network);
+    }
   }
 
   void _stopConnectivityListener() {

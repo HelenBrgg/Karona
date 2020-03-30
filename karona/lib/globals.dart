@@ -1,3 +1,3 @@
-import "wifiObserver.dart";
+import "wifi/wifiObserver.dart";
 
 WifiObserver wifiObserver;

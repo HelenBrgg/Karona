@@ -3,6 +3,7 @@ import 'DetailPages/socializingDetail.dart';
 import 'DetailPages/stayHealthyDetail.dart';
 import 'DetailPages/pseudoDetail.dart';
 import 'globals.dart';
+import 'package:karona/wifi/wifiNetworkManager.dart';
 
 class MenuButton extends StatelessWidget {
   final String option;
@@ -16,8 +17,8 @@ class MenuButton extends StatelessWidget {
     if (option == 'Socializing') {
       return SocializingDetail();
     }
-    if (option == 'Pseudo') {
-      return PseudoDetail();
+    if (option == 'Home Networks') {
+      return WifiNetworkManager();
     }
   }
 
@@ -35,10 +36,9 @@ class MenuButton extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               )),icon],),
           onPressed: () {
-            //Navigator.push(context, MaterialPageRoute(builder: (context) {
-            //  return pageSelector();
-            //}));
-            wifiObserver.printNetworkDB();
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return pageSelector();
+            }));
           },
           shape: new RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),

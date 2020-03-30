@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './header.dart';
 import './body.dart';
-import 'wifiObserver.dart';
+import 'wifi/wifiObserver.dart';
 import 'globals.dart';
 
 import './challenge_manager.dart';

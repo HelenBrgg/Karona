@@ -15,7 +15,7 @@ class _MenuState extends State<Menu> {
         Icons.audiotrack,
         color: Colors.blue,
         size: 20.0,)],
-    ['Pseudo',Icon(
+    ['Home Networks',Icon(
         Icons.audiotrack,
         color: Colors.brown,
         size: 20.0,),]
