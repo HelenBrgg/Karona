@@ -5,6 +5,11 @@ import './persistency/challenge_sql_interface.dart';
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
+import './persistency/challenge_classes.dart';
+import 'package:connectivity/connectivity.dart'; 
+
+import 'dart:async';
+
 
 class ChallengeManager
 {
@@ -12,6 +17,22 @@ class ChallengeManager
   Challenge_SQL_Interface challengeSqlInterface = new Challenge_SQL_Interface();
 
   List<Challenge> activeChallenges = List<Challenge>();
+  List<Challenge> allChallenges = List<Challenge>();
+
+  final StreamController<List<Challenge>> _streamControllerActiveChallenges = new StreamController<List<Challenge>>.broadcast();
+  Stream<List<Challenge>> _streamActiveChallenges;
+
+  final Connectivity _connectivity = Connectivity();
+
+
+  ChallengeManager(){
+     _streamActiveChallenges = _streamControllerActiveChallenges.stream;
+    }
+
+  Stream<List<Challenge>> getStreamActiveChallenges()
+  {
+    return _streamActiveChallenges;
+  }
 
   Future<void> initChallengeManager() async
   {
@@ -60,13 +81,16 @@ class ChallengeManager
     print("\n>>>>>>>>> Activating random challenge.");
 
     // load all challenges
-    List<Challenge> allChallenges = await challengeSqlInterface.challenges();
+    allChallenges = await challengeSqlInterface.challenges();
 
     print("\nAll challenges = ");
     for(var i=0;i<allChallenges.length;i++){
         print(allChallenges[i]); 
     }
 
+    // generate a new challenge only if there are non-active challenges left
+    if(activeChallenges.length<allChallenges.length)
+    {
     // find a new, random challenge that is not part of the currently active challenges
     var rng = new Random();
     bool is_new_number = true;
@@ -91,11 +115,25 @@ class ChallengeManager
     for(var i=0;i<activeChallenges.length;i++){
         print(activeChallenges[i]); 
     }
+    }
+    else
+    {
+      print("\n### All available challenges are already active!");
+    }
+
+    _streamControllerActiveChallenges.add(activeChallenges);
   }
 
   void deactivateChallenge(Challenge challenge)
   {
     activeChallenges.remove(challenge);
+    _streamControllerActiveChallenges.add(activeChallenges);
+  }
+
+  void activateChallenge(Challenge challenge)
+  {
+    activeChallenges.add(challenge);
+    _streamControllerActiveChallenges.add(activeChallenges);
   }
 }
 

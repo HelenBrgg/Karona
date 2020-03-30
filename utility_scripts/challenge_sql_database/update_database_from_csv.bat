@@ -1,0 +1,1 @@
+sqlite3 < ./create_challenge_database.txt

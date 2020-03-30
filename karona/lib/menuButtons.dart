@@ -5,10 +5,14 @@ import 'DetailPages/pseudoDetail.dart';
 import 'globals.dart';
 import 'package:karona/wifi/wifiNetworkManager.dart';
 
+import './globals.dart';
+
 class MenuButton extends StatelessWidget {
   final String option;
-   final Icon icon;
-  MenuButton(this.option,this.icon);
+  final Icon icon;
+  MenuButton(this.option,this.icon, this.parentAction);
+
+  final void Function() parentAction;
   
   pageSelector() {
     if (option == 'Stay healthy') {
@@ -36,6 +40,10 @@ class MenuButton extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               )),icon],),
           onPressed: () {
+            //Navigator.push(context, MaterialPageRoute(builder: (context) {
+              //return pageSelector();
+            //}));
+            parentAction();
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return pageSelector();
             }));

@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
+import 'persistency/challenge_classes.dart';
+import 'globals.dart';
 
-class NotificationDisplay extends StatelessWidget {
+class NotificationDisplay extends StatefulWidget
+{
+  @override
+  _NotificationDisplayState createState() => _NotificationDisplayState();
+}
+
+
+class _NotificationDisplayState extends State<NotificationDisplay>
+ {
+
+  
+  List <Challenge> active_challenges_for_Helen = [];
+   void _newStreamInput(List<Challenge> data)
+   {
+     setState(() {
+             active_challenges_for_Helen = data;
+          });
+   }
+
   @override
   Widget build(BuildContext context) {
+    activeChallengesStream.listen((data){
+        _newStreamInput(data);
+    });
     return Container(
       margin:EdgeInsets.only(left:7,right:7,top:7),
         width: double.infinity,
@@ -23,7 +46,13 @@ class NotificationDisplay extends StatelessWidget {
                         fontSize: 30.0),textAlign: TextAlign.left,)
           ]),
           Container(child: Column(children:
-[            Text('Bla'),Text('Bla'),]
+                active_challenges_for_Helen.map((element) => Card(
+                child: Column(children: <Widget>[
+              //Image.asset('assets/food.jpg'),
+              Text(element.toString())
+            ],
+            ),
+            )).toList()
           )
 
           )
