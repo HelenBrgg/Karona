@@ -75,42 +75,64 @@ class ChallengeManager
     await challengeSqlInterface.insertChallenge(clg_go_to_bathroom);
   }
   
-  Future<void> activateRandomChallenge()
+  Future<void> activateRandomChallenge(String type)
   async
   {
     print("\n>>>>>>>>> Activating random challenge.");
 
-    // load all challenges
-    allChallenges = await challengeSqlInterface.challenges();
+    List<String> challengeTypes = await challengeSqlInterface.challengeTypes();
+    List<Challenge> allFittingChallenges = [];
+    List<Challenge> allFittingActiveChallenges = [];
+    if (challengeTypes.contains(type))
+    {
+        var intermedAllFittingChallenges= await challengeSqlInterface.challenges();
+        var intermedAllFittingActiveChallenges = activeChallenges;
 
-    print("\nAll challenges = ");
-    for(var i=0;i<allChallenges.length;i++){
-        print(allChallenges[i]); 
+        var intA = intermedAllFittingChallenges.where((element) => element.challengeType == type);
+        allFittingChallenges = new List<Challenge>.from(intA);
+        var intB = intermedAllFittingActiveChallenges.where((element) => element.challengeType == type);
+        allFittingActiveChallenges =  new List<Challenge>.from(intB);
+
+        print("\nBuilt fitting lists");
+    }
+    else
+    {
+        allFittingChallenges= await challengeSqlInterface.challenges();
+        allFittingActiveChallenges = activeChallenges;
+    }
+
+
+
+    print("\nAll fitting challenges = ");
+    for(var i=0;i<allFittingChallenges.length;i++){
+        print(allFittingChallenges[i]); 
     }
 
     // generate a new challenge only if there are non-active challenges left
-    if(activeChallenges.length<allChallenges.length)
+    if(allFittingActiveChallenges.length<allFittingChallenges.length)
     {
     // find a new, random challenge that is not part of the currently active challenges
     var rng = new Random();
     bool is_new_number = true;
-    int random_challenge_id;
+    int random_challenge_index;
+    Challenge randomChallenge;
     do {
-        random_challenge_id = rng.nextInt(allChallenges.length);
         is_new_number = true;
+
+        //draw a new, random challenge
+        random_challenge_index = rng.nextInt(allFittingChallenges.length);
+        randomChallenge = allFittingChallenges[random_challenge_index];
+        
         // iterate over all active challenges and check that the challenge is not already active
-        for(var i=0;i<activeChallenges.length;i++){
-          if(activeChallenges[i].id == random_challenge_id)
-          {
-            is_new_number = false;
-          }
+        if(allFittingActiveChallenges.contains(randomChallenge))
+        {
+          is_new_number = false;
         }
     } while (is_new_number == false);
 
-    // draw the random challenge with the new, unique id
-    Challenge random_challenge = await challengeSqlInterface.getChallengeById(random_challenge_id);
-    activeChallenges.add(random_challenge);
-    print("\nNew challenge = " + random_challenge.toString());
+    // add the new challenge to the active challenges
+    activeChallenges.add(randomChallenge);
+    print("\nNew challenge = " + randomChallenge.toString());
     print("\nAll active challenges = ");
     for(var i=0;i<activeChallenges.length;i++){
         print(activeChallenges[i]); 
@@ -143,9 +165,9 @@ void main() async
   ChallengeManager chalMan = new ChallengeManager();
   await chalMan.initChallengeManager();
   await chalMan.generatePseudoChallenges();
-  await chalMan.activateRandomChallenge();
-  await chalMan.activateRandomChallenge();
-  await chalMan.activateRandomChallenge();
+  await chalMan.activateRandomChallenge("none");
+  await chalMan.activateRandomChallenge("none");
+  await chalMan.activateRandomChallenge("none");
   List <Challenge> active_challenges_for_Helen = chalMan.activeChallenges;
 
   print("\nAll active challenges for Helen = ");
