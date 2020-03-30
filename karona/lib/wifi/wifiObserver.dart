@@ -16,7 +16,8 @@ class WifiObserver {
   var _subscription;
 
   //list for networks
-  List<String> _networkList = List<String>();
+  List<String> _networkSSIDList = List<String>();
+  List<Network> _networkList;
 
   //some flags for functionality
   bool _alertedFlag = false;
@@ -40,9 +41,10 @@ class WifiObserver {
   }
 
   void updateNetworkList() async{
-    _networkList.clear();
-    (await networks_sql_interface.networks()).forEach((n){
-      _networkList.add(n.ssid);
+    _networkSSIDList.clear();
+    _networkList = await networks_sql_interface.networks();
+    _networkList.forEach((n){
+      _networkSSIDList.add(n.ssid);
     });
   }
 
@@ -53,7 +55,7 @@ class WifiObserver {
     else{
       if(result == ConnectivityResult.wifi){
         _obtainWifiInfo();
-        if(_networkList.contains(_currentSSID) && !_alertedFlag){
+        if(_networkSSIDList.contains(_currentSSID) && !_alertedFlag){
           _streamControllerGotHome.add(true);
           _alertedFlag = true;
         }
@@ -75,7 +77,7 @@ class WifiObserver {
   }
 
   void addCurrentNetworkToHomeList() async{
-    if(!_networkList.contains(_currentSSID)){
+    if(!_networkSSIDList.contains(_currentSSID)){
       var network = Network(
           id: 0,
           ssid: _currentSSID,
@@ -83,6 +85,7 @@ class WifiObserver {
       );
       await networks_sql_interface.insertNetwork(network);
     }
+    updateNetworkList();
   }
 
   void _stopConnectivityListener() {
@@ -120,6 +123,18 @@ class WifiObserver {
 
   bool getAlertFlag() {
     return _alertedFlag;
+  }
+
+  List<Network> getNetworkList() {
+    return _networkList;
+  }
+
+  void deleteWifi(String SSID) async{
+    StreamController<bool> _streamControllerDeletedWlan = StreamController<bool>.broadcast();
+    Stream<bool> streamDeletedWlan;
+    await networks_sql_interface.deleteNetwork(SSID);
+    _streamControllerDeletedWlan.add(true);
+    updateNetworkList();
   }
 
 }
