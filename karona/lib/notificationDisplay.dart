@@ -49,8 +49,38 @@ class _NotificationDisplayState extends State<NotificationDisplay>
                 active_challenges_for_Helen.map((element) => Card(
                 child: Column(children: <Widget>[
               //Image.asset('assets/food.jpg'),
-              Text(element.toString())
+              Card(child: ListTile(
+                          leading: Icon(Icons.directions_bike),
+                          title: Text(element.toString()),
+                          trailing: PopupMenuButton<int>(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 0,
+                child: Text("Info"),
+              ),
+              PopupMenuItem(
+                value: 1,
+                child: Text("I pledge allegiance to the Flag of the United States of America, and to the Republic for which it stands, one nation under God, indivisible, with liberty and justice for all."),
+              ),
             ],
+            onSelected: (value) {
+              switch (value) {
+                case 0:
+                  {
+                    print(wifiObserver.getWifiSSID());
+                    break;
+                  }
+                case 1:
+                  {
+                    chalMan.deactivateChallenge(element);
+                    break;
+                  }
+              }
+              setState(() {});
+            },
+          ),
+            ),
+              )],
             ),
             )).toList()
           )
@@ -59,3 +89,5 @@ class _NotificationDisplayState extends State<NotificationDisplay>
         ]));
   }
 }
+
+

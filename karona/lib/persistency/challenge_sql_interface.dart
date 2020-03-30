@@ -66,7 +66,7 @@ class Challenge_SQL_Interface
     // Query the table for all The Dogs.
     final List<Map<String, dynamic>> maps = await db.query('challenges');
 
-    // Convert the List<Map<String, dynamic> into a List<Dog>.
+    // Convert the List<Map<String, dynamic> into a List<Challenges>.
     return List.generate(maps.length, (i) {
       return Challenge(
         id: int.parse(maps[i]['id']),
@@ -74,6 +74,20 @@ class Challenge_SQL_Interface
         challengeText: maps[i]['challengeText'],
       );
     });
+  }
+
+  Future<List<String>> challengeTypes() async {
+    // Get a reference to the database.
+    final Database db = await database;
+
+    // Query the table for all The Dogs.
+    final List<Map<String, dynamic>> maps = await db.query('challenges');
+
+    // Convert the List<Map<String, dynamic> into a List<Challenges>.
+    List<String> non_unique_types = List.generate(maps.length, (i) {
+      return ((maps[i]['challengeType']).toString());
+    });
+    return non_unique_types.toSet().toList();
   }
 
   Future<void> updateChallenge(Challenge challenge) async {

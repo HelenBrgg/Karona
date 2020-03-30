@@ -10,9 +10,10 @@ import './globals.dart';
 class MenuButton extends StatelessWidget {
   final String option;
   final Icon icon;
-  MenuButton(this.option,this.icon, this.parentAction);
+  MenuButton(this.option,this.icon, this.parentAction, this.parentActionArgs);
 
-  final void Function() parentAction;
+  final void Function(String) parentAction;
+  final String parentActionArgs;
   
   pageSelector() {
     if (option == 'Stay healthy') {
@@ -43,10 +44,9 @@ class MenuButton extends StatelessWidget {
             //Navigator.push(context, MaterialPageRoute(builder: (context) {
               //return pageSelector();
             //}));
-            parentAction();
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return pageSelector();
-            }));
+            parentAction(parentActionArgs);
+            //Navigator.push(context, MaterialPageRoute(builder: (context) {return pageSelector();}
+            //));
           },
           shape: new RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),

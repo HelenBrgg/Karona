@@ -24,4 +24,13 @@ class Challenge {
   String toString() {
     return '\"$challengeText\" (challenge id = $id, $challengeType challenge)';
   }
+
+  @override
+  bool operator ==(Object other) =>
+  identical(this, other) ||
+  other is Challenge &&
+  id == other.id &&
+  challengeType == other.challengeType &&
+  challengeText == other.challengeText;
+
 }
