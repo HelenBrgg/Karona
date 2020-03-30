@@ -19,7 +19,6 @@ async
 
   chalMan = new ChallengeManager();
   await chalMan.initChallengeManager();
-  await chalMan.generatePseudoChallenges();
   activeChallengesStream = chalMan.getStreamActiveChallenges();
 
   //Notifications managers

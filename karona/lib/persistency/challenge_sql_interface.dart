@@ -7,26 +7,39 @@ import 'package:flutter/widgets.dart';
 
 import './challenge_classes.dart';
 
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'dart:typed_data';
+import 'dart:io' as io;
+
 class Challenge_SQL_Interface
 {
   Future<Database> database;
   void Init_SQL_Interface() async
   {
-    database = openDatabase(
-    // Set the path to the database. Note: Using the `join` function from the
-    // `path` package is best practice to ensure the path is correctly
-    // constructed for each platform.
-    join(await getDatabasesPath(), 'challenge_database.db'),
-    // When the database is first created, create a table to store dogs.
-    onCreate: (db, version) {
-      return db.execute(
-        "CREATE TABLE challenges(id INTEGER PRIMARY KEY, challengeText TEXT)",
-      );
-    },
-    // Set the version. This executes the onCreate function and provides a
-    // path to perform database upgrades and downgrades.
-    version: 1,
-  );
+
+  // Construct a file path to copy database to
+  Directory documentsDirectory = await getApplicationDocumentsDirectory();
+  String path = join(documentsDirectory.path, "challenge_database.db");
+  Directory appDocDir = await getApplicationDocumentsDirectory();
+  String databasePath = join(appDocDir.path, 'challenge_database.db');
+
+   print("================================>>>> Exists call = " + io.File(databasePath).exists().toString());
+
+  // Only copy if the database doesn't exist
+  if (FileSystemEntity.typeSync(path) == FileSystemEntityType.notFound){
+  // Load database from asset and copy
+  ByteData data = await rootBundle.load(join('assets', 'challenge_database.db'));
+  List<int> bytes = data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+
+  // Save copied asset to documents
+  await new File(path).writeAsBytes(bytes);
+}
+  print("====================================>>> Exists call = " + io.File(databasePath).exists().toString());
+
+  database = openDatabase(databasePath);
+
   return;
   }
 
@@ -56,7 +69,8 @@ class Challenge_SQL_Interface
     // Convert the List<Map<String, dynamic> into a List<Dog>.
     return List.generate(maps.length, (i) {
       return Challenge(
-        id: maps[i]['id'],
+        id: int.parse(maps[i]['id']),
+        challengeType:maps[i]['challengeType'],
         challengeText: maps[i]['challengeText'],
       );
     });
@@ -93,9 +107,10 @@ class Challenge_SQL_Interface
 
   Future<Challenge> getChallengeById(int id) async {
   final db = await database;
+  String id_string = id.toString();
   List<Map> results = await db.query('challenges',
       where: 'id = ?',
-      whereArgs: [id]);
+      whereArgs: [id_string]);
 
   if (results.length > 0) {
     return new Challenge.fromMap(results.first);

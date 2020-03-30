@@ -1,17 +1,20 @@
 class Challenge {
   final int id;
+  final String challengeType;
   final String challengeText;
 
-  Challenge({this.id, this.challengeText});
+  Challenge({this.id, this.challengeType, this.challengeText});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'challengeType': challengeType,
       'challengeText': challengeText,
     };}
 	
 	factory Challenge.fromMap(Map<String, dynamic> data) => new Challenge(
-    id: data["id"],
+    id: int.parse(data["id"]),
+    challengeType: data["challengeType"],
     challengeText: data["challengeText"],
     );
 
@@ -19,6 +22,6 @@ class Challenge {
   // each dog when using the print statement.
   @override
   String toString() {
-    return '\"$challengeText\" (challenge id = $id)';
+    return '\"$challengeText\" (challenge id = $id, $challengeType challenge)';
   }
 }

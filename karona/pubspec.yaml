@@ -51,6 +51,7 @@ flutter:
 
   assets:
     - assets/food.jpg
+    - assets/challenge_database.db
   #  - images/a_dot_ham.jpeg
 
 
