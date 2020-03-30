@@ -23,7 +23,7 @@ class _NotificationDisplayState extends State<NotificationDisplay>
 
   @override
   Widget build(BuildContext context) {
-    activeChallengesStream.listen((data){
+    chalMan.getStreamActiveChallenges().listen((data){
         _newStreamInput(data);
     });
     return Container(
@@ -49,7 +49,10 @@ class _NotificationDisplayState extends State<NotificationDisplay>
                 active_challenges_for_Helen.map((element) => Card(
                 child: Column(children: <Widget>[
               //Image.asset('assets/food.jpg'),
-              Text(element.toString())
+              RaisedButton(
+            child: Text(element.toString()),
+            onPressed: () => chalMan.deactivateChallenge(element),
+          )
             ],
             ),
             )).toList()
