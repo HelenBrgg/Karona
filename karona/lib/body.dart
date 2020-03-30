@@ -6,12 +6,10 @@ import './notificationDisplay.dart';
 import 'package:connectivity/connectivity.dart';
 import 'persistency/challenge_classes.dart';
 
+import './globals.dart';
+
 class Body extends StatefulWidget
 {
-  final Stream<List <Challenge>> streamActiveChallenges;
-
-  Body({Key key, this.streamActiveChallenges}) : super(key:key);
-
   @override
   _BodyState createState() => _BodyState();
 }
@@ -27,6 +25,6 @@ class _BodyState extends State<Body>
           color: Colors.white,
           borderRadius: BorderRadius.only(topRight: Radius.circular(75.0)),
         ), 
-        child:Column(children:[NotificationDisplay(streamActiveChallenges:widget.streamActiveChallenges),Menu()]));//fixup
+        child:Column(children:[NotificationDisplay(),Menu()]));//fixup
   }
 }

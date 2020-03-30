@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
               child: Text('Cancel all notification'),
               onPressed: () => chalMan.activateRandomChallenge(),
             ),
-              Header(), SizedBox(height: 20.0), Body(streamActiveChallenges:activeChallengesStream)]
+              Header(), SizedBox(height: 20.0), Body()]
     )  
     ));
   }

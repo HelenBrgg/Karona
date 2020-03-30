@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'persistency/challenge_classes.dart';
+import 'globals.dart';
 
 class NotificationDisplay extends StatefulWidget
 {
-  final Stream<List <Challenge>> streamActiveChallenges;
-
-  NotificationDisplay({Key key, this.streamActiveChallenges}) : super(key:key);
-
   @override
   _NotificationDisplayState createState() => _NotificationDisplayState();
 }
@@ -26,7 +23,7 @@ class _NotificationDisplayState extends State<NotificationDisplay>
 
   @override
   Widget build(BuildContext context) {
-    widget.streamActiveChallenges.listen((data){
+    activeChallengesStream.listen((data){
         _newStreamInput(data);
     });
     return Container(
